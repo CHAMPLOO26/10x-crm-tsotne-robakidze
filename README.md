@@ -1,2 +1,11 @@
-first day: created sign up and log in html and css also wrote js logic for sign up
-find out if indexof() cant find something it returns -1.
+This project is a simple Customer Relationship Management (CRM) system built with HTML, CSS and JavaScript.
+The application allows users to register, log in, and manage customer information.
+User data and CRM information are stored in the browser using LocalStorage.
+
+Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- LocalStorage
+- Git & GitHub
