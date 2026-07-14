@@ -43,7 +43,7 @@ loginForm.addEventListener("submit", function (event) {
   const savedUser = localStorage.getItem("crm_users");
   // parsing info we take from localstorage
   //if not any info we return empty array
-  const crmUsers = savedUsers ? JSON.parse(savedUsers) : [];
+  const crmUsers = savedUser ? JSON.parse(savedUser) : [];
 
   //we check array if inputed email and password is same
   // as we have in a crmUser
