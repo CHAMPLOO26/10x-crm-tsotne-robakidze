@@ -60,6 +60,7 @@ loginForm.addEventListener("submit", function (event) {
   // created object which takes user that is currently logged in
   const session = {
     userId: findUser.id,
+    fullName: findUser.fullName,
     email: findUser.email,
     loggedInAt: new Date().toISOString(),
   };
