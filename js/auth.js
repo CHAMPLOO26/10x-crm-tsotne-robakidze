@@ -1,3 +1,5 @@
+redirectIfAuthenticated();
+
 const form = document.getElementById("signupForm");
 
 const fullNameInput = document.getElementById("fullName");
