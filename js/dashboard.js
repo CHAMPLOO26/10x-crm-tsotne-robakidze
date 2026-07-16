@@ -24,6 +24,11 @@ const logoutButton = document.getElementById("logoutButton");
 //if noone is logged in when oppening site it will open index.html/login  page
 const savedSession = localStorage.getItem("crm_session");
 
+logoutButton.addEventListener("click", function () {
+  localStorage.removeItem("crm_session");
+  window.location.href = "../html/index.html";
+});
+
 if (!savedSession) {
   window.location.href = "../html/index.html";
 } else {
