@@ -14,21 +14,38 @@ let sortValue = "newest";
 
 function renderClients() {
   clientsGrid.innerHTML = "";
+  clientsGrid.classList.remove("empty-state");
+
   let visibleClients = [...clients];
+
   if (activeStatus !== "All") {
-    visibleClients = visibleClients.filter((client) => {
+    visibleClients = visibleClients.filter(function (client) {
       return client.status === activeStatus;
     });
   }
 
+  if (searchValue.length !== 0) {
+    visibleClients = visibleClients.filter(function (client) {
+      return (
+        client.name.toLowerCase().includes(searchValue) ||
+        client.company.toLowerCase().includes(searchValue) ||
+        client.email.toLowerCase().includes(searchValue)
+      );
+    });
+  }
+
   if (sortValue === "newest") {
-    visibleClients.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-    );
+    visibleClients.sort(function (a, b) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
   } else if (sortValue === "name") {
-    visibleClients.sort((a, b) => a.name.localeCompare(b.name));
+    visibleClients.sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    });
   } else if (sortValue === "dealValue") {
-    visibleClients.sort((a, b) => b.dealValue - a.dealValue);
+    visibleClients.sort(function (a, b) {
+      return b.dealValue - a.dealValue;
+    });
   }
 
   if (visibleClients.length === 0) {
@@ -37,41 +54,44 @@ function renderClients() {
     return;
   }
 
-  visibleClients.forEach((client) => {
+  visibleClients.forEach(function (client) {
     const clientCard = document.createElement("article");
     clientCard.classList.add("client-card");
 
     const clientHeader = document.createElement("div");
     clientHeader.classList.add("client-header");
+
     const avatar = document.createElement("img");
     avatar.src = client.image;
     avatar.alt = client.name;
     avatar.classList.add("client-avatar");
-    clientHeader.append(avatar);
+
+    const clientIdentity = document.createElement("div");
+    clientIdentity.classList.add("client-identity");
+
+    const clientName = document.createElement("h3");
+    clientName.textContent = client.name;
+
+    const clientCompany = document.createElement("p");
+    clientCompany.textContent = client.company;
+
+    clientIdentity.append(clientName, clientCompany);
+    clientHeader.append(avatar, clientIdentity);
 
     const clientDetails = document.createElement("div");
     clientDetails.classList.add("client-details");
+
     const statusBadge = document.createElement("span");
     statusBadge.classList.add("status-badge");
     statusBadge.textContent = client.status;
 
     const dealValue = document.createElement("p");
     dealValue.classList.add("deal-value");
-    dealValue.textContent = `$ ${client.dealValue.toLocaleString()}`;
+    dealValue.textContent = `$${client.dealValue.toLocaleString()}`;
 
     clientDetails.append(statusBadge, dealValue);
 
-    const clinetIdentity = document.createElement("div");
-    clinetIdentity.classList.add("client-identity");
-    const clinetIdentityH3 = document.createElement("h3");
-    const clinetIdentityP = document.createElement("p");
-    clinetIdentityH3.textContent = client.name;
-    clinetIdentityP.textContent = client.company;
-    clinetIdentity.append(clinetIdentityH3, clinetIdentityP);
-    clientHeader.append(clinetIdentity);
-
-    clientCard.append(clientHeader);
-    clientCard.append(clientDetails);
+    clientCard.append(clientHeader, clientDetails);
     clientsGrid.append(clientCard);
   });
 }
@@ -82,3 +102,26 @@ async function initializeClientsPage() {
 }
 
 initializeClientsPage();
+
+filterButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    activeStatus = button.dataset.status;
+
+    filterButtons.forEach(function (filterButton) {
+      filterButton.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderClients();
+  });
+});
+
+searchInput.addEventListener("input", function () {
+  searchValue = searchInput.value.trim().toLowerCase();
+  renderClients();
+});
+
+sortSelect.addEventListener("change", function () {
+  sortValue = sortSelect.value;
+  renderClients();
+});

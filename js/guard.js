@@ -11,3 +11,11 @@ function redirectIfAuthenticated() {
     window.location.href = "../html/dashboard.html";
   }
 }
+
+const logoutButton = document.getElementById("logoutButton");
+if (logoutButton) {
+  logoutButton.addEventListener("click", function () {
+    localStorage.removeItem("crm_session");
+    window.location.href = "../html/index.html";
+  });
+}
