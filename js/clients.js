@@ -7,6 +7,11 @@ const addClientButton = document.getElementById("addClientButton");
 
 const filterButtons = document.querySelectorAll(".filter-chip");
 
+const clientModal = document.getElementById("clientModal");
+const addClientForm = document.getElementById("addClientForm");
+const closeModalButton = document.getElementById("closeModalButton");
+const cancelModalButton = document.getElementById("cancelModalButton");
+
 let clients = [];
 let activeStatus = "All";
 let searchValue = "";
@@ -124,4 +129,100 @@ searchInput.addEventListener("input", function () {
 sortSelect.addEventListener("change", function () {
   sortValue = sortSelect.value;
   renderClients();
+});
+
+addClientButton.addEventListener("click", () => {
+  clientModal.classList.remove("hidden");
+});
+closeModalButton.addEventListener("click", () => {
+  clientModal.classList.add("hidden");
+});
+cancelModalButton.addEventListener("click", () => {
+  clientModal.classList.add("hidden");
+});
+
+const clientNameInput = document.getElementById("clientName");
+const clientEmailInput = document.getElementById("clientEmail");
+const clientPhoneInput = document.getElementById("clientPhone");
+const clientCompanyInput = document.getElementById("clientCompany");
+const clientDealValueInput = document.getElementById("clientDealValue");
+const clientStatusInput = document.getElementById("clientStatus");
+
+const clientNameError = document.getElementById("clientNameError");
+const clientEmailError = document.getElementById("clientEmailError");
+const clientPhoneError = document.getElementById("clientPhoneError");
+const clientDealValueError = document.getElementById("clientDealValueError");
+
+const toast = document.getElementById("toast");
+
+addClientForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  clientNameError.textContent = "";
+  clientEmailError.textContent = "";
+  clientPhoneError.textContent = "";
+  clientDealValueError.textContent = "";
+
+  const clientName = clientNameInput.value.trim();
+  const clientEmail = clientEmailInput.value.trim();
+  const clientPhone = clientPhoneInput.value.trim();
+  const clientCompany = clientCompanyInput.value.trim();
+  const clientDealValue = Number(clientDealValueInput.value);
+  const clientStatus = clientStatusInput.value;
+
+  let hasError = false;
+
+  if (clientName.length === 0) {
+    clientNameError.textContent = "Client name is required";
+    hasError = true;
+  }
+  if (clientEmail.length === 0) {
+    clientEmailError.textContent = "Client email is required";
+    hasError = true;
+  }
+  if (clientDealValue <= 0) {
+    clientDealValueError.textContent = "Deal value must be greater than 0";
+    hasError = true;
+  }
+
+  //email validation finding out if it contains @ and dot after @
+  const atIndex = clientEmail.indexOf("@");
+  const dotInder = clientEmail.indexOf(".", atIndex + 1);
+
+  // if email input contains @ and "." after @ and if input also exicts
+  let isEmailValid =
+    clientEmail.length > 0 && atIndex !== -1 && dotInder !== -1;
+  //if not
+  if (clientEmail.length > 0 && !isEmailValid) {
+    clientEmailError.textContent = "Please enter a valid email address";
+    hasError = true;
+  }
+
+  if (hasError) {
+    return;
+  }
+
+  const newClient = {
+    id: Date.now(),
+    name: clientName,
+    email: clientEmail,
+    phone: clientPhone,
+    company: clientCompany,
+    status: clientStatus,
+    dealValue: clientDealValue,
+    notes: [],
+    createdAt: new Date().toISOString(),
+    image: `https://ui-avatars.com/api/?name=${encodeURIComponent(clientName)}`,
+  };
+
+  clients.push(newClient);
+  localStorage.setItem("crm_clients", JSON.stringify(clients));
+  renderClients();
+  addClientForm.reset();
+  clientModal.classList.add("hidden");
+
+  toast.textContent = "Client added successfully";
+  toast.classList.remove("hidden");
+  setTimeout(function () {
+    toast.classList.add("hidden");
+  }, 2000);
 });
