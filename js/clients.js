@@ -94,10 +94,38 @@ function renderClients() {
     dealValue.classList.add("deal-value");
     dealValue.textContent = `$${client.dealValue.toLocaleString()}`;
 
-    clientDetails.append(statusBadge, dealValue);
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+    deleteButton.textContent = "Delete";
+
+    const viewButton = document.createElement("button");
+    viewButton.classList.add("view-button");
+    viewButton.textContent = "View details";
+
+    clientDetails.append(statusBadge, dealValue, viewButton, deleteButton);
 
     clientCard.append(clientHeader, clientDetails);
     clientsGrid.append(clientCard);
+
+    viewButton.addEventListener("click", function () {
+      window.location.href = `../html/client-details.html?id=${client.id}`;
+    });
+    deleteButton.addEventListener("click", function () {
+      const isConfirmed = confirm(
+        "Are you sure you want to delete this client?",
+      );
+
+      if (!isConfirmed) {
+        return;
+      }
+
+      clients = clients.filter(function (oneClient) {
+        return oneClient.id !== client.id;
+      });
+
+      localStorage.setItem("crm_clients", JSON.stringify(clients));
+      renderClients();
+    });
   });
 }
 

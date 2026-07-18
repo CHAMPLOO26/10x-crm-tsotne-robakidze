@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Details</title>
+
+    <link rel="stylesheet" href="../css/client-details.css" />
+  </head>
+
+  <body>
+    <header class="navbar">
+      <a class="logo" href="../html/dashboard.html">10X CRM</a>
+
+      <nav class="nav-links">
+        <a href="../html/dashboard.html">Dashboard</a>
+        <a href="../html/clients.html" class="active">Clients</a>
+        <a href="../html/profile.html">Profile</a>
+      </nav>
+
+      <button id="logoutButton" class="logout-button">Log out</button>
+    </header>
+
+    <main class="details-page">
+      <a id="backToClients" class="back-link" href="../html/clients.html">
+        ← Back to clients
+      </a>
+
+      <section class="client-profile-card">
+        <div class="client-main-info">
+          <img id="clientAvatar" class="client-avatar" src="" alt="" />
+
+          <div>
+            <h1 id="clientName">Client name</h1>
+            <p id="clientCompany" class="company-name">Company</p>
+          </div>
+        </div>
+
+        <span id="clientStatus" class="status-badge">Lead</span>
+      </section>
+
+      <section class="details-grid">
+        <article class="details-card">
+          <h2>Contact information</h2>
+
+          <div class="detail-row">
+            <span>Email</span>
+            <p id="clientEmail">—</p>
+          </div>
+
+          <div class="detail-row">
+            <span>Phone</span>
+            <p id="clientPhone">—</p>
+          </div>
+
+          <div class="detail-row">
+            <span>Added</span>
+            <p id="clientCreatedAt">—</p>
+          </div>
+        </article>
+
+        <article class="details-card">
+          <h2>Deal information</h2>
+
+          <div class="detail-row">
+            <span>Deal value</span>
+            <p id="clientDealValue" class="deal-value">—</p>
+          </div>
+
+          <div class="detail-row">
+            <span>Current status</span>
+            <p id="clientStatusText">—</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="notes-card">
+        <h2>Notes</h2>
+
+        <form id="noteForm" class="note-form">
+          <textarea
+            id="noteInput"
+            placeholder="Write a note about this client..."
+          ></textarea>
+          <small id="noteError" class="error"></small>
+
+          <button type="submit" class="add-note-button">Add note</button>
+        </form>
+
+        <div id="notesList" class="notes-list"></div>
+      </section>
+    </main>
+
+    <script src="../js/guard.js" defer></script>
+    <script src="../js/data.js" defer></script>
+    <script src="../js/client-details.js" defer></script>
+  </body>
+</html>
