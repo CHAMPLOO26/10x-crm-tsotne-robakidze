@@ -89,7 +89,7 @@ a {
 }
 
 .logout-button {
-  margin-left: auto;
+  margin-left: 0;
   padding: 10px 16px;
   border: 1px solid #d9e0ec;
   border-radius: 8px;
@@ -467,4 +467,20 @@ h2 {
     width: 100%;
     justify-content: space-between;
   }
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  margin-left: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.theme-toggle:hover {
+  background: var(--primary-soft);
 }

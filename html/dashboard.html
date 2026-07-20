@@ -6,6 +6,7 @@
     <title>10X CRM | Dashboard</title>
 
     <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
   </head>
 
   <body>
@@ -20,10 +21,8 @@
         <a href="clients.html">Clients</a>
         <a href="profile.html">Profile</a>
       </nav>
-
-      <button id="logoutButton" class="logout-button" type="button">
-        Log out
-      </button>
+      <button id="themeToggle" class="theme-toggle" type="button">🌙</button>
+      <button id="logoutButton" class="logout-button">Log out</button>
     </header>
 
     <main class="dashboard">
@@ -143,6 +142,7 @@
         </article>
       </section>
     </main>
+    <script src="../js/theme.js" defer></script>
     <script src="../js/guard.js" defer></script>
     <script src="../js/data.js" defer></script>
     <script src="../js/dashboard.js" defer></script>

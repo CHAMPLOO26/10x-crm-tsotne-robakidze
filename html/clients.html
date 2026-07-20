@@ -6,6 +6,7 @@
     <title>10X CRM | Clients</title>
 
     <link rel="stylesheet" href="../css/clients.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
   </head>
 
   <body>
@@ -20,10 +21,8 @@
         <a class="active" href="clients.html">Clients</a>
         <a href="profile.html">Profile</a>
       </nav>
-
-      <button id="logoutButton" class="logout-button" type="button">
-        Log out
-      </button>
+      <button id="themeToggle" class="theme-toggle" type="button">🌙</button>
+      <button id="logoutButton" class="logout-button">Log out</button>
     </header>
 
     <main class="clients-page">
@@ -157,7 +156,7 @@
     </div>
 
     <p id="toast" class="toast hidden"></p>
-
+    <script src="../js/theme.js" defer></script>
     <script src="../js/guard.js" defer></script>
     <script src="../js/data.js" defer></script>
     <script src="../js/clients.js" defer></script>

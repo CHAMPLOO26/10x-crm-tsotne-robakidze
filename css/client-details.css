@@ -280,3 +280,19 @@ body {
 .delete-note-button:hover {
   text-decoration: underline;
 }
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  margin-left: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.theme-toggle:hover {
+  background: var(--primary-soft);
+}
