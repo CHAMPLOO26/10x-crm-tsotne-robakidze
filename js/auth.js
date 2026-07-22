@@ -119,6 +119,6 @@ form.addEventListener("submit", function (event) {
   successMessage.textContent = "Account created successfully! Please log in.";
   // if everything executes succesfuly login page will open
   setTimeout(() => {
-    window.location.href = "../html/index.html";
+    window.location.href = "../index.html";
   }, 1000);
 });

@@ -23,7 +23,7 @@ const recentClients = document.getElementById("recentClients");
 const savedSession = localStorage.getItem("crm_session");
 
 if (!savedSession) {
-  window.location.href = "../html/index.html";
+  window.location.href = "./index.html";
 } else {
   const session = JSON.parse(savedSession);
   //welcome code

@@ -43,3 +43,7 @@ A responsive CRM web application built with HTML, CSS, and vanilla JavaScript.
 - `clients.html` — Client list and management
 - `client-details.html` — Individual client details and notes
 - `profile.html` — User profile
+
+## netlify link
+
+chic-kelpie-def3bd.netlify.app
