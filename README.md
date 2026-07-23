@@ -46,4 +46,4 @@ A responsive CRM web application built with HTML, CSS, and vanilla JavaScript.
 
 ## netlify link
 
-chic-kelpie-def3bd.netlify.app
+10x-crm-project.netlify.app
