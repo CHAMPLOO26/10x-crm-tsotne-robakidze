@@ -67,7 +67,7 @@ if (!savedSession) {
     }).length;
 
     newThisWeek.textContent = newThisWeekCount;
-
+    // filter clients with status lead
     const leadTotal = clients.filter(function (client) {
       return client.status === "Lead";
     }).length;
@@ -75,7 +75,7 @@ if (!savedSession) {
     leadCount.textContent = leadTotal;
 
     let leadPercent = 0;
-
+    //calculate what is the percentage of lead clients
     if (clients.length > 0) {
       leadPercent = (leadTotal / clients.length) * 100;
     }
@@ -84,7 +84,7 @@ if (!savedSession) {
     }
 
     leadProgress.style.width = leadPercent + "%";
-
+    // filter clients with status Contacted
     const contactedTotal = clients.filter(function (client) {
       return client.status === "Contacted";
     }).length;
@@ -92,7 +92,7 @@ if (!savedSession) {
     contactedCount.textContent = contactedTotal;
 
     let contactedPercent = 0;
-
+    //calculate what is the percentage of Contacted clients
     if (clients.length > 0) {
       contactedPercent = (contactedTotal / clients.length) * 100;
     }
@@ -100,7 +100,7 @@ if (!savedSession) {
       contactedPercent = 0;
     }
     contactedProgress.style.width = contactedPercent + "%";
-
+    // filter clients with status Won
     const wonTotal = clients.filter(function (client) {
       return client.status === "Won";
     }).length;
@@ -108,7 +108,7 @@ if (!savedSession) {
     wonCount.textContent = wonTotal;
 
     let wonPercent = 0;
-
+    //calculate what is the percentage of Won clients
     if (clients.length > 0) {
       wonPercent = (wonTotal / clients.length) * 100;
     }
@@ -116,7 +116,7 @@ if (!savedSession) {
       wonPercent = 0;
     }
     wonProgress.style.width = wonPercent + "%";
-
+    // filter clients with status Lost
     const lostTotal = clients.filter(function (client) {
       return client.status === "Lost";
     }).length;
@@ -124,7 +124,7 @@ if (!savedSession) {
     lostCount.textContent = lostTotal;
 
     let lostPercent = 0;
-
+    //calculate what is the percentage of Lost clients
     if (clients.length > 0) {
       lostPercent = (lostTotal / clients.length) * 100;
     }
@@ -132,14 +132,15 @@ if (!savedSession) {
       lostPercent = 0;
     }
     lostProgress.style.width = lostPercent + "%";
-
+    // copy clients array
     const clientCopy = [...clients];
+    // out of copied array we sort them by date and take 5 most recent clients
     const recentFiveClients = clientCopy
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5);
 
     recentClients.textContent = "";
-
+    // created elements for recent activity part in on dashboard
     recentFiveClients.forEach((client) => {
       const clientRow = document.createElement("div");
       clientRow.classList.add("recent-client-row");

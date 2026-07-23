@@ -60,6 +60,7 @@ function renderClients() {
   }
 
   visibleClients.forEach(function (client) {
+    //create new element
     const clientCard = document.createElement("article");
     clientCard.classList.add("client-card");
 
@@ -108,17 +109,19 @@ function renderClients() {
     clientsGrid.append(clientCard);
 
     viewButton.addEventListener("click", function () {
+      //button takes us to client-details page
       window.location.href = `../html/client-details.html?id=${client.id}`;
     });
+    // button delets clients info 
     deleteButton.addEventListener("click", function () {
       const isConfirmed = confirm(
         "Are you sure you want to delete this client?",
       );
-
+       //if isConfirmed is not confirmed nothing happends
       if (!isConfirmed) {
         return;
       }
-
+         
       clients = clients.filter(function (oneClient) {
         return oneClient.id !== client.id;
       });
