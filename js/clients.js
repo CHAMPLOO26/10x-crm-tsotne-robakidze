@@ -1,3 +1,4 @@
+// Redirect the user to the login page if they are not authenticated
 requireAuth();
 
 const clientsGrid = document.getElementById("clientsGrid");
@@ -12,23 +13,28 @@ const addClientForm = document.getElementById("addClientForm");
 const closeModalButton = document.getElementById("closeModalButton");
 const cancelModalButton = document.getElementById("cancelModalButton");
 
+// Store all clients and the current filter, search, and sorting values
 let clients = [];
 let activeStatus = "All";
 let searchValue = "";
 let sortValue = "newest";
 
 function renderClients() {
+  // Clear the previous client cards before rendering again
   clientsGrid.innerHTML = "";
   clientsGrid.classList.remove("empty-state");
 
+  // Create a copy so the original clients array is not changed by sorting
   let visibleClients = [...clients];
 
+  // Filter clients by their selected status
   if (activeStatus !== "All") {
     visibleClients = visibleClients.filter(function (client) {
       return client.status === activeStatus;
     });
   }
 
+  // Filter clients by name, company, or email search value
   if (searchValue.length !== 0) {
     visibleClients = visibleClients.filter(function (client) {
       return (
@@ -39,6 +45,7 @@ function renderClients() {
     });
   }
 
+  // Sort clients based on the selected sort option
   if (sortValue === "newest") {
     visibleClients.sort(function (a, b) {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -53,14 +60,15 @@ function renderClients() {
     });
   }
 
+  // Show an empty-state message if no clients match the filters
   if (visibleClients.length === 0) {
     clientsGrid.textContent = "No clients found";
     clientsGrid.classList.add("empty-state");
     return;
   }
 
+  // Create and display one client card for every visible client
   visibleClients.forEach(function (client) {
-    //create new element
     const clientCard = document.createElement("article");
     clientCard.classList.add("client-card");
 
@@ -81,6 +89,7 @@ function renderClients() {
     const clientCompany = document.createElement("p");
     clientCompany.textContent = client.company;
 
+    // Add the client's name and company to the card header
     clientIdentity.append(clientName, clientCompany);
     clientHeader.append(avatar, clientIdentity);
 
@@ -103,29 +112,33 @@ function renderClients() {
     viewButton.classList.add("view-button");
     viewButton.textContent = "View details";
 
+    // Add client details and buttons to the card
     clientDetails.append(statusBadge, dealValue, viewButton, deleteButton);
-
     clientCard.append(clientHeader, clientDetails);
     clientsGrid.append(clientCard);
 
+    // Open the details page for this specific client
     viewButton.addEventListener("click", function () {
-      //button takes us to client-details page
       window.location.href = `../html/client-details.html?id=${client.id}`;
     });
-    // button delets clients info 
+
+    // Delete the selected client after confirmation
     deleteButton.addEventListener("click", function () {
       const isConfirmed = confirm(
         "Are you sure you want to delete this client?",
       );
-       //if isConfirmed is not confirmed nothing happends
+
+      // Stop the deletion if the user clicks Cancel
       if (!isConfirmed) {
         return;
       }
-         
+
+      // Keep every client except the selected client
       clients = clients.filter(function (oneClient) {
         return oneClient.id !== client.id;
       });
 
+      // Save the updated clients array and render the new list
       localStorage.setItem("crm_clients", JSON.stringify(clients));
       renderClients();
     });
@@ -133,41 +146,56 @@ function renderClients() {
 }
 
 async function initializeClientsPage() {
+  // Load clients from localStorage or the API, then display them
   clients = await loadClients();
   renderClients();
 }
 
+// Start loading the client page
 initializeClientsPage();
 
+// Add a click event to every filter button
 filterButtons.forEach(function (button) {
   button.addEventListener("click", function () {
+    // Save the selected status from the button's data-status attribute
     activeStatus = button.dataset.status;
 
+    // Remove the active class from every filter button
     filterButtons.forEach(function (filterButton) {
       filterButton.classList.remove("active");
     });
 
+    // Add the active class to the clicked filter button
     button.classList.add("active");
+
+    // Render clients using the new filter
     renderClients();
   });
 });
 
+// Update the search value while the user types
 searchInput.addEventListener("input", function () {
   searchValue = searchInput.value.trim().toLowerCase();
   renderClients();
 });
 
+// Update the sort value when the selected option changes
 sortSelect.addEventListener("change", function () {
   sortValue = sortSelect.value;
   renderClients();
 });
 
+// Open the add-client modal
 addClientButton.addEventListener("click", () => {
   clientModal.classList.remove("hidden");
 });
+
+// Close the modal using the close button
 closeModalButton.addEventListener("click", () => {
   clientModal.classList.add("hidden");
 });
+
+// Close the modal using the cancel button
 cancelModalButton.addEventListener("click", () => {
   clientModal.classList.add("hidden");
 });
@@ -186,13 +214,18 @@ const clientDealValueError = document.getElementById("clientDealValueError");
 
 const toast = document.getElementById("toast");
 
+// Handle the add-client form submission
 addClientForm.addEventListener("submit", (event) => {
+  // Prevent page refresh
   event.preventDefault();
+
+  // Clear old validation errors
   clientNameError.textContent = "";
   clientEmailError.textContent = "";
   clientPhoneError.textContent = "";
   clientDealValueError.textContent = "";
 
+  // Get and prepare input values
   const clientName = clientNameInput.value.trim();
   const clientEmail = clientEmailInput.value.trim();
   const clientPhone = clientPhoneInput.value.trim();
@@ -202,36 +235,44 @@ addClientForm.addEventListener("submit", (event) => {
 
   let hasError = false;
 
+  // Validate the client name
   if (clientName.length === 0) {
     clientNameError.textContent = "Client name is required";
     hasError = true;
   }
+
+  // Check if the email field is empty
   if (clientEmail.length === 0) {
     clientEmailError.textContent = "Client email is required";
     hasError = true;
   }
+
+  // Deal value must be greater than zero
   if (clientDealValue <= 0) {
     clientDealValueError.textContent = "Deal value must be greater than 0";
     hasError = true;
   }
 
-  //email validation finding out if it contains @ and dot after @
+  // Find the position of @ and a dot after @
   const atIndex = clientEmail.indexOf("@");
-  const dotInder = clientEmail.indexOf(".", atIndex + 1);
+  const dotIndex = clientEmail.indexOf(".", atIndex + 1);
 
-  // if email input contains @ and "." after @ and if input also exicts
-  let isEmailValid =
-    clientEmail.length > 0 && atIndex !== -1 && dotInder !== -1;
-  //if not
+  // Check if the email format is valid
+  const isEmailValid =
+    clientEmail.length > 0 && atIndex !== -1 && dotIndex !== -1;
+
+  // Show an error only when a non-empty email has an invalid format
   if (clientEmail.length > 0 && !isEmailValid) {
     clientEmailError.textContent = "Please enter a valid email address";
     hasError = true;
   }
 
+  // Stop the function if any validation error exists
   if (hasError) {
     return;
   }
 
+  // Create a new client object from the form values
   const newClient = {
     id: Date.now(),
     name: clientName,
@@ -242,17 +283,29 @@ addClientForm.addEventListener("submit", (event) => {
     dealValue: clientDealValue,
     notes: [],
     createdAt: new Date().toISOString(),
+
+    // Create an avatar image based on the client's name
     image: `https://ui-avatars.com/api/?name=${encodeURIComponent(clientName)}`,
   };
 
+  // Add the new client to the existing clients array
   clients.push(newClient);
+
+  // Save the updated clients array in localStorage
   localStorage.setItem("crm_clients", JSON.stringify(clients));
+
+  // Update the visible client list
   renderClients();
+
+  // Reset the form and close the modal
   addClientForm.reset();
   clientModal.classList.add("hidden");
 
+  // Show a temporary success message
   toast.textContent = "Client added successfully";
   toast.classList.remove("hidden");
+
+  // Hide the success message after two seconds
   setTimeout(function () {
     toast.classList.add("hidden");
   }, 2000);
