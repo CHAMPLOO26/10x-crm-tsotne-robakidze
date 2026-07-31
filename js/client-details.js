@@ -17,6 +17,13 @@ const noteForm = document.getElementById("noteForm");
 const noteInput = document.getElementById("noteInput");
 const noteError = document.getElementById("noteError");
 
+const reminderForm = document.getElementById("reminderForm");
+const reminderTextInput = document.getElementById("reminderText");
+const reminderSecondsInput = document.getElementById("reminderSeconds");
+const reminderError = document.getElementById("reminderError");
+const reminderSuccess = document.getElementById("reminderSuccess");
+const reminderToast = document.getElementById("reminderToast");
+
 // Get the client ID from the page URL
 // Example: client-details.html?id=123
 const params = new URLSearchParams(window.location.search);
@@ -138,6 +145,38 @@ async function initializeClientsDetails() {
     // Render the new notes list and clear the form
     renderNotes(client);
     noteForm.reset();
+  });
+  //reminder
+  reminderForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    reminderError.textContent = "";
+    reminderSuccess.textContent = "";
+
+    const reminderText = reminderTextInput.value.trim();
+    const reminderSeconds = Number(reminderSecondsInput.value);
+
+    if (reminderText.length === 0 || reminderSeconds <= 0) {
+      reminderError.textContent =
+        "Please enter a reminder message and a valid number of seconds";
+      return;
+    }
+
+    reminderSuccess.textContent = "Reminder has been set";
+
+    // Convert seconds to milliseconds for setTimeout
+    const delay = reminderSeconds * 1000;
+
+    setTimeout(function () {
+      reminderToast.textContent = `Reminder for ${client.name}: ${reminderText}`;
+      reminderToast.classList.remove("hidden");
+
+      setTimeout(function () {
+        reminderToast.classList.add("hidden");
+      }, 4000);
+    }, delay);
+
+    reminderForm.reset();
   });
 }
 

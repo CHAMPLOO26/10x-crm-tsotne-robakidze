@@ -9,15 +9,17 @@
   </head>
 
   <body>
-    <header class="navbar">
-      <a class="logo" href="../html/dashboard.html">10X CRM</a>
+    <header class="site-header">
+      <a class="brand" href="dashboard.html">
+        <span class="brand-mark">10X</span>
+        <span>CRM</span>
+      </a>
 
-      <nav class="nav-links">
-        <a href="../html/dashboard.html">Dashboard</a>
-        <a href="../html/clients.html" class="active">Clients</a>
-        <a href="../html/profile.html">Profile</a>
+      <nav class="main-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="clients.html">Clients</a>
+        <a href="profile.html">Profile</a>
       </nav>
-
       <button id="themeToggle" class="theme-toggle" type="button">🌙</button>
       <button id="logoutButton" class="logout-button">Log out</button>
     </header>
@@ -90,6 +92,37 @@
 
         <div id="notesList" class="notes-list"></div>
       </section>
+      <section class="reminder-section">
+        <h2>Set Reminder</h2>
+
+        <form id="reminderForm" novalidate>
+          <div class="form-group">
+            <label for="reminderText">Reminder message</label>
+            <input
+              type="text"
+              id="reminderText"
+              placeholder="For example: Call this client"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="reminderSeconds">Show reminder after seconds</label>
+            <input
+              type="number"
+              id="reminderSeconds"
+              min="1"
+              placeholder="10"
+            />
+          </div>
+
+          <small class="error" id="reminderError"></small>
+
+          <button type="submit" class="save-button">Set Reminder</button>
+          <p class="success" id="reminderSuccess"></p>
+        </form>
+      </section>
+
+      <p id="reminderToast" class="reminder-toast hidden"></p>
     </main>
     <script src="../js/theme.js" defer></script>
     <script src="../js/guard.js" defer></script>

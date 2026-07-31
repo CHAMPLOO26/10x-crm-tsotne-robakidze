@@ -19,50 +19,77 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.navbar {
+.site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  min-height: 72px;
+  padding: 0 6vw;
   display: flex;
   align-items: center;
-  gap: 28px;
-  min-height: 70px;
-  padding: 0 6%;
+  gap: 42px;
+  background: var(--surface);
   border-bottom: 1px solid var(--line);
-  background: var(--white);
 }
 
-.logo {
-  color: var(--ink);
-  font-size: 1.1rem;
-  font-weight: 800;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #102144;
+  font-weight: bold;
   text-decoration: none;
 }
 
-.nav-links {
+.brand-mark {
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.78rem;
+}
+
+.main-nav {
   display: flex;
-  gap: 20px;
-  flex: 1;
+  align-self: stretch;
+  gap: 28px;
 }
 
-.nav-links a {
+.main-nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
   color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: bold;
   text-decoration: none;
 }
 
-.nav-links a.active,
-.nav-links a:hover {
+.main-nav .active,
+.main-nav a:hover {
   color: var(--primary);
 }
 
+.main-nav .active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--primary);
+  content: "";
+}
+
 .logout-button {
-  border: 0;
-  background: transparent;
-  color: #c53030;
-  cursor: pointer;
-  font-weight: 700;
+  margin-left: 0;
+  padding: 10px 16px;
+  border: 1px solid #d9e0ec;
+  border-radius: 8px;
+  background: white;
+  color: #40506b;
+  font-size: 0.88rem;
+  font-weight: bold;
 }
 
 .details-page {
@@ -298,4 +325,88 @@ body {
 
 .theme-toggle:hover {
   background: var(--primary-soft);
+}
+
+.reminder-section {
+  padding: 22px;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 6px 18px rgba(28, 48, 78, 0.05);
+}
+
+.reminder-section h2 {
+  margin: 0 0 18px;
+  font-size: 1.1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  outline: 2px solid #b9c7ff;
+}
+
+.save-button {
+  width: 100%;
+  padding: 11px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.save-button:hover {
+  background: #264bd0;
+}
+
+.success {
+  min-height: 18px;
+  margin: 12px 0 0;
+  color: #16803c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.reminder-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2000;
+  max-width: 320px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(23, 35, 59, 0.2);
+}
+
+.hidden {
+  display: none;
 }
