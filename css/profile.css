@@ -271,3 +271,14 @@ body {
 .success.no-changes {
   color: var(--muted);
 }
+
+.password-section {
+  padding-top: 30px;
+  margin-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.password-section h2 {
+  margin: 0 0 20px;
+  font-size: 1.05rem;
+}
