@@ -267,3 +267,7 @@ body {
 .reset-data-button:hover {
   background: #fff1f2;
 }
+
+.success.no-changes {
+  color: var(--muted);
+}

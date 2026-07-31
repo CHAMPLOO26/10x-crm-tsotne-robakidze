@@ -43,37 +43,43 @@ if (!currentUser) {
 
   // Listen for the profile form submission
   profileForm.addEventListener("submit", function (event) {
-    // Prevent the page from refreshing after form submission
     event.preventDefault();
-    // Clear previous messages
+
     profileFullNameError.textContent = "";
     profileSuccess.textContent = "";
-    // Get the updated values from the form
+    profileSuccess.classList.remove("no-changes");
+
     const updatedFullName = profileFullName.value.trim();
     const updatedCompany = profileCompany.value.trim();
 
-    // Validate the full name
     if (updatedFullName.length < 3) {
       profileFullNameError.textContent =
         "Full name must be at least 3 characters";
       return;
     }
-    // Update the current user object
+
+    // Compare values BEFORE changing currentUser
+    if (
+      updatedFullName === currentUser.fullName &&
+      updatedCompany === currentUser.company
+    ) {
+      profileSuccess.textContent = "No changes were made";
+      profileSuccess.classList.add("no-changes");
+      return;
+    }
+
+    // Update user data only after the comparison
     currentUser.fullName = updatedFullName;
     currentUser.company = updatedCompany;
-    // Save the updated users array in localStorage
+
     localStorage.setItem("crm_users", JSON.stringify(users));
-    // Update the name saved in the active session
+
     session.fullName = updatedFullName;
-    // Save the updated session in localStorage
     localStorage.setItem("crm_session", JSON.stringify(session));
 
-    // Update the avatar immediately without refreshing the page
     profileAvatar.textContent = updatedFullName.charAt(0).toUpperCase();
-    // Show a success message
     profileSuccess.textContent = "Profile updated successfully";
   });
-
   resetDataButton.addEventListener("click", function () {
     const isConfirmed = confirm(
       "Are you sure you want to reset all CRM client data?",
