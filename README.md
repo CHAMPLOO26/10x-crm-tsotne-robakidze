@@ -46,4 +46,4 @@ A responsive CRM web application built with HTML, CSS, and vanilla JavaScript.
 
 ## netlify link
 
-10x-crm-project.netlify.app
+10x-project.netlify.app
