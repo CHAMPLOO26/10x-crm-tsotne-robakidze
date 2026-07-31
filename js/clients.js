@@ -123,24 +123,47 @@ function renderClients() {
     });
 
     // Delete the selected client after confirmation
-    deleteButton.addEventListener("click", function () {
+    deleteButton.addEventListener("click", async function () {
       const isConfirmed = confirm(
         "Are you sure you want to delete this client?",
       );
 
-      // Stop the deletion if the user clicks Cancel
       if (!isConfirmed) {
         return;
       }
 
-      // Keep every client except the selected client
-      clients = clients.filter(function (oneClient) {
-        return oneClient.id !== client.id;
-      });
+      try {
+        // Simulate deleting the client through the API
+        const response = await fetch(
+          `https://dummyjson.com/users/${client.id}`,
+          {
+            method: "DELETE",
+          },
+        );
 
-      // Save the updated clients array and render the new list
-      localStorage.setItem("crm_clients", JSON.stringify(clients));
-      renderClients();
+        if (!response.ok) {
+          throw new Error("Could not delete client");
+        }
+
+        // Read the simulated API response
+        await response.json();
+
+        // Remove the client from the local CRM array
+        clients = clients.filter(function (oneClient) {
+          return oneClient.id !== client.id;
+        });
+
+        // Save the updated clients array locally
+        localStorage.setItem("crm_clients", JSON.stringify(clients));
+
+        renderClients();
+      } catch (error) {
+        toast.textContent = "Could not delete client. Please try again.";
+        toast.classList.remove("hidden");
+        setTimeout(function () {
+          toast.classList.add("hidden");
+        }, 2000);
+      }
     });
   });
 }
@@ -215,7 +238,7 @@ const clientDealValueError = document.getElementById("clientDealValueError");
 const toast = document.getElementById("toast");
 
 // Handle the add-client form submission
-addClientForm.addEventListener("submit", (event) => {
+addClientForm.addEventListener("submit", async (event) => {
   // Prevent page refresh
   event.preventDefault();
 
@@ -288,25 +311,50 @@ addClientForm.addEventListener("submit", (event) => {
     image: `https://ui-avatars.com/api/?name=${encodeURIComponent(clientName)}`,
   };
 
-  // Add the new client to the existing clients array
-  clients.push(newClient);
+  try {
+    // Simulate creating a new user through the API
+    const response = await fetch("https://dummyjson.com/users/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstName: clientName,
+        lastName: "",
+        email: clientEmail,
+        phone: clientPhone,
+        company: {
+          name: clientCompany,
+        },
+      }),
+    });
 
-  // Save the updated clients array in localStorage
-  localStorage.setItem("crm_clients", JSON.stringify(clients));
+    if (!response.ok) {
+      throw new Error("Could not add client");
+    }
 
-  // Update the visible client list
-  renderClients();
+    // Read the simulated API response
+    await response.json();
 
-  // Reset the form and close the modal
-  addClientForm.reset();
-  clientModal.classList.add("hidden");
+    // Save the new CRM client locally
+    clients.push(newClient);
+    localStorage.setItem("crm_clients", JSON.stringify(clients));
 
-  // Show a temporary success message
-  toast.textContent = "Client added successfully";
-  toast.classList.remove("hidden");
+    renderClients();
+    addClientForm.reset();
+    clientModal.classList.add("hidden");
 
-  // Hide the success message after two seconds
-  setTimeout(function () {
-    toast.classList.add("hidden");
-  }, 2000);
+    toast.textContent = "Client added successfully";
+    toast.classList.remove("hidden");
+
+    setTimeout(function () {
+      toast.classList.add("hidden");
+    }, 2000);
+  } catch (error) {
+    toast.textContent = "Could not add client. Please try again.";
+    toast.classList.remove("hidden");
+    setTimeout(function () {
+      toast.classList.add("hidden");
+    }, 2000);
+  }
 });
